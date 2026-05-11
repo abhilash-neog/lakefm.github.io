@@ -1,0 +1,272 @@
+:root {
+    --accent-color: #1a6b8a;
+    --accent-dark: #124e66;
+    --nice-gray: rgb(236, 240, 243);
+    --main-width: 84ch;
+    font-size: 1.05em;
+    font-family: "Noto Sans Display", "Segoe UI", Arial, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.65;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0 1em;
+    background: #ffffff;
+}
+
+main {
+    max-width: var(--main-width);
+    margin: 0 auto;
+    padding: 2em 0 4em;
+}
+
+/* ── typography ── */
+
+h1 {
+    font-size: 2em;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: center;
+    margin: 1em 0 0.3em;
+}
+
+h2 {
+    font-size: 1.4em;
+    font-weight: 700;
+    margin-top: 2em;
+}
+
+h3 {
+    font-size: 1.15em;
+    font-weight: 700;
+    margin-top: 1.5em;
+}
+
+p {
+    margin: 0.75em 0;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ── layout helpers ── */
+
+.centered {
+    text-align: center;
+}
+
+.text-sm {
+    font-size: 0.85em;
+}
+
+/* full-bleed banded section heading */
+.banded {
+    width: 100vw;
+    position: relative;
+    left: calc(-50vw + 50%);
+    padding: 0.6em 1em;
+    text-align: center;
+    background-color: var(--nice-gray);
+    margin: 2em 0 1em;
+    font-size: 1.25em;
+}
+
+/* ── venue / conference badge ── */
+.venue {
+    text-align: center;
+    font-style: italic;
+    color: #555;
+    margin: 0.2em 0 0.8em;
+    font-size: 0.95em;
+}
+
+/* ── authors ── */
+.authors {
+    text-align: center;
+    margin: 0.5em 0;
+    font-size: 0.95em;
+    line-height: 1.8;
+}
+
+.affiliations {
+    text-align: center;
+    color: #555;
+    font-size: 0.875em;
+    margin: 0.3em 0 1em;
+    line-height: 1.7;
+}
+
+.equal-contrib {
+    text-align: center;
+    font-size: 0.8em;
+    color: #777;
+    margin-bottom: 1.2em;
+}
+
+/* ── pill buttons ── */
+.button-row {
+    text-align: center;
+    margin: 1.4em 0 0.5em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6em;
+}
+
+.pill-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.45em 1.1em;
+    border-radius: 9999px;
+    background-color: #1a1a1a;
+    color: #ffffff !important;
+    font-size: 0.9em;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: background-color 0.15s;
+}
+
+.pill-button:hover {
+    background-color: var(--accent-dark);
+    text-decoration: none;
+}
+
+.pill-button img,
+.pill-button svg {
+    height: 1.1em;
+    width: auto;
+    filter: invert(1);
+    vertical-align: middle;
+}
+
+.pill-button.disabled {
+    background-color: #888;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* ── teaser / figure ── */
+figure {
+    margin: 1.5em 0;
+    text-align: center;
+}
+
+figure img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+figcaption {
+    font-size: 0.875em;
+    color: #444;
+    margin-top: 0.5em;
+    text-align: left;
+    line-height: 1.5;
+}
+
+/* ── contributions list ── */
+.contributions {
+    padding-left: 1.4em;
+}
+
+.contributions li {
+    margin: 0.6em 0;
+}
+
+/* ── method components grid ── */
+.components {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17ch, 1fr));
+    gap: 1em;
+    margin: 1em 0;
+}
+
+.component-card {
+    background: var(--nice-gray);
+    border-radius: 6px;
+    padding: 0.9em 1em;
+}
+
+.component-card h4 {
+    margin: 0 0 0.3em;
+    font-size: 0.95em;
+    color: var(--accent-dark);
+}
+
+.component-card p {
+    margin: 0;
+    font-size: 0.85em;
+    color: #333;
+}
+
+/* ── results table ── */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.88em;
+    margin: 1em 0;
+    display: inline-block;
+    overflow-x: auto;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+thead th {
+    background: var(--nice-gray);
+    padding: 0.5em 0.75em;
+    text-align: left;
+    border-bottom: 2px solid #ccc;
+}
+
+tbody td {
+    padding: 0.4em 0.75em;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+tbody tr:hover {
+    background-color: var(--nice-gray);
+}
+
+tbody tr.highlight {
+    font-weight: 700;
+    background: #e8f4f8;
+}
+
+/* ── BibTeX block ── */
+pre.bibtex {
+    background: #f5f5f5;
+    border-radius: 4px;
+    padding: 0.9em 1em;
+    font-size: 0.85em;
+    overflow-x: auto;
+    white-space: pre;
+    line-height: 1.4;
+    border-left: 3px solid var(--accent-color);
+}
+
+/* ── divider ── */
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 2em 0;
+}
+
+/* ── responsive ── */
+@media (max-width: 600px) {
+    h1 { font-size: 1.45em; }
+    .components { grid-template-columns: 1fr; }
+    .pill-button { font-size: 0.82em; padding: 0.4em 0.9em; }
+}

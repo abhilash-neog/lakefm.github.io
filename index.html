@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LakeFM: A Foundation Model for Aquatic Ecosystems</title>
+  <meta name="description" content="LakeFM is a foundation model for aquatic ecosystems that handles irregular multivariate multi-depth time series data across lakes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+<main>
+
+  <!-- ── Title ── -->
+  <h1>LakeFM: Toward a Foundation Model for Aquatic Ecosystems Using Irregular Multivariate Multi-depth Time Series Data</h1>
+
+  <!-- ── Authors ── -->
+  <p class="authors">
+    <a href="mailto:abhilash22@vt.edu">Abhilash Neog</a><sup>1</sup>,
+    Sepideh Fatemi<sup>1*</sup>,
+    Medha Sawhney<sup>1*</sup>,
+    Kazi Sajeed Mehrab<sup>1</sup>,
+    Aanish Pradhan<sup>1</sup>,
+    Bennett J. McAfee<sup>2</sup>,
+    Emma Marchisin<sup>3</sup>,
+    Robert Ladwig<sup>4</sup>,
+    Arka Daw<sup>5</sup>,
+    Cayelan C. Carey<sup>6</sup>,
+    Paul C. Hanson<sup>3</sup>,
+    Anuj Karpatne<sup>1</sup>
+  </p>
+
+  <p class="affiliations">
+    <sup>1</sup>Dept. of Computer Science, Virginia Tech &nbsp;&nbsp;
+    <sup>2</sup>Annis Water Resources Institute, Grand Valley State University<br/>
+    <sup>3</sup>Center for Limnology, University of Wisconsin–Madison &nbsp;&nbsp;
+    <sup>4</sup>Dept. of Ecoscience, Aarhus University<br/>
+    <sup>5</sup>Oak Ridge National Laboratory &nbsp;&nbsp;
+    <sup>6</sup>Dept. of Biological Sciences, Virginia Tech
+  </p>
+
+  <p class="equal-contrib"><sup>*</sup>Equal contribution</p>
+
+  <!-- ── Action Buttons ── -->
+  <div class="button-row">
+    <span class="pill-button disabled">
+      <img src="images/icons/arxiv.svg" alt="" /> ArXiv &mdash; Coming Soon
+    </span>
+    <a class="pill-button" href="lakefm.pdf">
+      <img src="images/icons/pdf.svg" alt="" /> Paper
+    </a>
+    <span class="pill-button disabled">
+      <img src="images/icons/github.svg" alt="" /> Code &mdash; Coming Soon
+    </span>
+  </div>
+
+  <!-- ── Abstract ── -->
+  <h2 class="banded">Abstract</h2>
+  <p>
+    Understanding and forecasting lake dynamics is critical for monitoring water quality and ecosystem
+    health across lakes and reservoirs. While machine learning methods have been recently applied to
+    ecological time-series data, existing works assume regular sampling in time and depth, and struggle
+    to generalize across lakes with heterogeneous variables, depths, and observation patterns. To address
+    these limitations, we introduce <strong>LakeFM</strong>, a foundation model for aquatic systems,
+    pre-trained on large-scale ecological datasets comprising both simulated and observed lake ecosystems.
+    Through extensive empirical evaluation, we show that LakeFM learns meaningful representations
+    spanning broader lake-level characteristics, and achieves competitive or often superior forecasting
+    performance compared to existing time-series foundation and non-foundation models, while producing
+    physically plausible predictions consistent with real-world lake dynamics.
+  </p>
+
+  <!-- ── Key Contributions ── -->
+  <h2 class="banded">Contributions</h2>
+  <ol class="contributions">
+    <li>
+      We propose <strong>LakeFM</strong>, a foundation model that can ingest <em>irregular,
+      multi-variate, multi-depth</em> lake time-series data — including partially observed inputs
+      across heterogeneous lakes — with competitive forecasting performance on both seen and unseen lakes,
+      while demonstrating emergent ability to adhere to aquatic physical laws.
+    </li>
+    <li>
+      We present novel insights about the <strong>static characteristics and temporal evolution</strong>
+      of lakes using the learned lake-specific embeddings, and highlight how LakeFM representations
+      effectively align with different ecological axes.
+    </li>
+    <li>
+      We present case studies on forecasting performance under <strong>variate and depth masking</strong>
+      scenarios, demonstrating how LakeFM's ability to handle partial input reveals novel insights
+      about variable interactions in lakes.
+    </li>
+  </ol>
+
+  <!-- ── Method ── -->
+  <h2 class="banded">Method</h2>
+  <p>
+    LakeFM operates as an <strong>encoder-decoder</strong> framework with four core components designed
+    to handle the sparsity and irregularity inherent in lake ecosystems.
+  </p>
+
+  <div class="components">
+    <div class="component-card">
+      <h4>Tokenization &amp; Embedding</h4>
+      <p>
+        Each observation tuple <em>(time, variable, depth, value)</em> is treated as a token.
+        Composite embeddings combine time, depth, variate, and value signals — allowing the model
+        to handle irregular grids without imputation.
+      </p>
+    </div>
+    <div class="component-card">
+      <h4>Encoder Layers</h4>
+      <p>
+        Transformer layers with Rotary Position Embeddings (RoPE) and a learnable
+        <em>attention bias</em> that differentiates intra-variate from inter-variate
+        interactions across irregular token sequences.
+      </p>
+    </div>
+    <div class="component-card">
+      <h4>Static &amp; Temporal Disentanglement</h4>
+      <p>
+        Two parallel linear projectors separate the encoder output into
+        <em>static</em> (lake-invariant characteristics) and
+        <em>temporal</em> (dynamic behavior) subspaces, jointly optimized with
+        contrastive and forecasting objectives.
+      </p>
+    </div>
+    <div class="component-card">
+      <h4>Query-Based Forecasting</h4>
+      <p>
+        A decoder conditioned on arbitrary future <em>(time, variable, depth)</em> queries
+        attends over the encoded history, enabling forecasts at any irregular output grid
+        without requiring a fixed forecast horizon.
+      </p>
+    </div>
+  </div>
+
+  <p>
+    Predictions are parameterized as a <strong>Student-<em>t</em> distribution</strong>
+    (&mu;, &sigma;, &nu;), with per-token degrees-of-freedom &nu; learned adaptively to capture the
+    heavy-tailed noise common in ecological measurements.
+    Pre-training jointly minimizes a probabilistic forecasting loss and a lake-wise
+    <strong>InfoNCE contrastive loss</strong> to encourage meaningful lake-specific representations.
+  </p>
+
+  <!-- ── Experimental Setup ── -->
+  <h2 class="banded">Experimental Setup</h2>
+
+  <h3>Dataset</h3>
+  <p>
+    LakeFM is pre-trained on a large-scale ecological dataset containing <strong>over 1.5 million
+    samples</strong>:
+  </p>
+  <ul>
+    <li>
+      <strong>LakeBeD-US</strong> — 500 million unique observations spanning 21 lakes across the
+      United States, covering 17 variables with 60–70% sparsity on average.
+    </li>
+    <li>
+      <strong>WQHanson Simulations</strong> — 4 simulation lakes generated using the process-based
+      water quality model.
+    </li>
+    <li>
+      <strong>FCR Simulations</strong> — 1,000 simulations generated using the GLM-AED
+      process-based model.
+    </li>
+  </ul>
+
+  <h3>Evaluation</h3>
+  <p>
+    The LakeBeD-US data is partitioned into an <em>In-Distribution (ID)</em> set (first 70% of
+    each lake's data, 15 lakes) and an <em>Out-of-Distribution (OOD)</em> set (final 20% of each
+    ID lake + 6 entirely unseen lakes). We evaluate under two settings:
+  </p>
+  <ul>
+    <li><strong>In-Distribution (ID)</strong> — held-out test data from the 15 ID lakes.</li>
+    <li><strong>Zero-Shot Generalization</strong> — the 6 entirely unseen OOD lakes.</li>
+  </ul>
+
+  <h3>Baselines</h3>
+  <p>
+    We compare against two families of baselines: (a) <strong>Time-Series Foundation Models</strong>
+    — Chronos&nbsp;2, LPTM, MOMENT, and (b) a <strong>non-foundation local model</strong> —
+    iTransformer trained on each lake individually.
+  </p>
+
+  <!-- ── Results ── -->
+  <h2 class="banded">Results</h2>
+
+  <h3>Forecasting Performance</h3>
+  <p>
+    LakeFM consistently achieves the lowest lake-wise MSE across all ID lakes. On OOD lakes,
+    LakeFM shows best zero-shot performance on all lakes except SUGG, where iTransformer
+    (locally trained) shows the lowest MSE. Crucially, iTransformer's performance varies widely
+    across OOD lakes since it relies solely on local data per lake.
+  </p>
+  <p>
+    LakeFM achieves a <strong>best overall rank of 2.17</strong> across all OOD lakes and
+    <strong>1.86 across all ID lakes</strong> in terms of lake-wise MSE — demonstrating
+    consistent cross-lake generalization that local models cannot provide.
+  </p>
+
+  <h3>Physical Plausibility</h3>
+  <p>
+    Beyond accuracy, LakeFM produces predictions consistent with real-world lake dynamics,
+    reflecting physically plausible behavior across heterogeneous lakes and variable sets.
+  </p>
+
+  <h3>Representation Quality</h3>
+  <p>
+    Learned lake-specific embeddings align with known ecological axes (e.g., lake depth,
+    trophic state, climate region), revealing that LakeFM captures meaningful
+    lake-level characteristics without explicit supervision on these attributes.
+  </p>
+
+  <!-- ── BibTeX ── -->
+  <h2 class="banded">BibTeX</h2>
+  <p>If you find this work useful, please cite:</p>
+<pre class="bibtex">@article{neog2024lakefm,
+  title     = {LakeFM: Toward a Foundation Model for Aquatic Ecosystems
+               Using Irregular Multivariate Multi-depth Time Series Data},
+  author    = {Neog, Abhilash and Fatemi, Sepideh and Sawhney, Medha and
+               Mehrab, Kazi Sajeed and Pradhan, Aanish and McAfee, Bennett J.
+               and Marchisin, Emma and Ladwig, Robert and Daw, Arka and
+               Carey, Cayelan C. and Hanson, Paul C. and Karpatne, Anuj},
+  year      = {2024}
+}</pre>
+
+  <!-- ── Acknowledgements ── -->
+  <h2 class="banded">Acknowledgements</h2>
+  <p>
+    This work was supported in part by the National Science Foundation and resources provided
+    by Virginia Tech, Oak Ridge National Laboratory, Grand Valley State University,
+    the University of Wisconsin–Madison, and Aarhus University.
+    We thank the broader limnology and AI4Science communities for datasets, feedback, and support.
+  </p>
+
+</main>
+</body>
+</html>
