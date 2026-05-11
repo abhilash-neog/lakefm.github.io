@@ -255,11 +255,11 @@ figcaption {
     margin-bottom: 1em;
 }
 
-/* slightly reduced figure — ~80% of text width, centered */
+/* slightly reduced figure — ~65% of text width, centered */
 .figure-reduced {
     margin: 1.2em auto;
     text-align: center;
-    max-width: 80%;
+    max-width: 65%;
 }
 
 .figure-reduced img {
