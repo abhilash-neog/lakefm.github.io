@@ -239,6 +239,13 @@ figcaption {
     grid-template-columns: 1fr 1fr 1fr;
 }
 
+/* narrower row — centers a pair of figures at ~75% of text width */
+.figure-row-sm {
+    max-width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .figure-row figure {
     margin: 0;
 }
