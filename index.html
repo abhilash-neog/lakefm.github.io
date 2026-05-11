@@ -176,16 +176,16 @@
   </p>
   <ul>
     <li>
-      <strong>LakeBeD-US</strong> [<a href="#" class="cite">citation</a>] — 500 million unique
+      <strong>LakeBeD-US</strong> <span class="cite">[McAfee et al., 2025]</span> — 500 million unique
       observations spanning 21 lakes across the United States, covering 17 variables with
       60–70% sparsity on average.
     </li>
     <li>
-      <strong>WQHanson Simulations</strong> [<a href="#" class="cite">citation</a>] — 4 simulation
+      <strong>WQHanson Simulations</strong> <span class="cite">[Hanson et al., 2023]</span> — 4 simulation
       lakes generated using the process-based water quality model.
     </li>
     <li>
-      <strong>FCR Simulations</strong> [<a href="#" class="cite">citation</a>] — 1,000 simulations
+      <strong>FCR Simulations</strong> <span class="cite">[Hipsey et al., 2019]</span> — 1,000 simulations
       generated using the GLM-AED process-based model.
     </li>
   </ul>
@@ -230,6 +230,9 @@
   </p>
 
   <h4>5.2.1 &nbsp; Variate Masking</h4>
+  <figure>
+    <img src="images/figures/variate_masking.png" alt="Variate masking overview" />
+  </figure>
   <p>
     We mask individual variates in the context window and measure the change in forecasting
     performance of all variables — revealing which variables carry the most predictive information
@@ -267,6 +270,9 @@
   </p>
 
   <h4>5.2.2 &nbsp; Depth Masking</h4>
+  <figure>
+    <img src="images/figures/depth_masking.png" alt="Depth masking overview" />
+  </figure>
   <p>
     We study the effect of masking all variates at either shallow or deep layers in the context
     window, measuring the impact on forecasting performance. LakeFM leverages cross-depth
@@ -354,13 +360,14 @@
     </figure>
   </div>
 
-  <figure>
-    <img src="images/figures/fig8_tsne_cyano.png" alt="t-SNE of lake embeddings colored by phosphorus and cyanobacteria" />
+  <figure class="figure-narrow">
+    <img src="images/figures/fig8_tsne_cyano.png" alt="t-SNE of simulated lake embeddings colored by w_p_cyano parameter" />
     <figcaption>
-      <strong>Biogeochemical alignment.</strong> Static embeddings colored by total
-      phosphorus and cyanobacteria concentration gradients. The embedding space aligns with
-      biogeochemical water quality indicators, suggesting that LakeFM captures nutrient
-      dynamics and algal bloom risk factors without direct supervision on these attributes.
+      <strong>LakeFM Embedding Alignment with Simulation Parameters.</strong>
+      We investigate whether LakeFM's embeddings of simulated lakes encode information of
+      process-based parameters used to generate the simulations. We can see a clear gradient
+      across the embedding space with respect to this parameter, with clear separation of low,
+      intermediate, and high <em>w<sub>p</sub><sub>cyano</sub></em> values.
     </figcaption>
   </figure>
 
@@ -377,13 +384,43 @@
   year      = {2024}
 }</pre>
 
+  <!-- ── References ── -->
+  <h2 class="banded">References</h2>
+  <ol class="references">
+    <li id="ref-hanson2023">
+      P. C. Hanson, R. Ladwig, C. Buelo, E. A. Albright, A. D. Delany, and C. C. Carey.
+      Legacy Phosphorus and Ecosystem Memory Control Future Water Quality in a Eutrophic Lake.
+      <em>Journal of Geophysical Research: Biogeosciences</em> 128, 12 (2023), e2023JG007620.
+      <a href="https://doi.org/10.1029/2023JG007620" target="_blank" rel="noopener">doi:10.1029/2023JG007620</a>
+    </li>
+    <li id="ref-hipsey2019">
+      M. R. Hipsey, L. C. Bruce, C. Boon, B. Busch, C. C. Carey, D. P. Hamilton, P. C. Hanson,
+      J. S. Read, E. de Sousa, M. Weber, and L. A. Winslow.
+      A General Lake Model (GLM 3.0) for linking with high-frequency sensor data from the Global
+      Lake Ecological Observatory Network (GLEON).
+      <em>Geoscientific Model Development</em> 12, 1 (2019), 473–523.
+    </li>
+    <li id="ref-mcafee2025">
+      B. J. McAfee, A. Pradhan, A. Neog, S. Fatemi, R. T. Hensley, M. E. Lofton, A. Karpatne,
+      C. C. Carey, and P. C. Hanson.
+      LakeBeD-US: a benchmark dataset for lake water quality time series and vertical profiles.
+      <em>Earth System Science Data</em> 17, 7 (2025), 3141–3165.
+    </li>
+  </ol>
+
   <!-- ── Acknowledgements ── -->
   <h2 class="banded">Acknowledgements</h2>
   <p>
-    This work was supported in part by the National Science Foundation and resources provided
-    by Virginia Tech, Oak Ridge National Laboratory, Grand Valley State University,
-    the University of Wisconsin–Madison, and Aarhus University.
-    We thank the broader limnology and AI4Science communities for datasets, feedback, and support.
+    We sincerely thank Mary E. Lofton from the Department of Biology, Virginia Tech for preparing
+    and curating the FCR simulations (comprising 1,000 simulation lake datasets) used in this study.
+    This work was supported in part by NSF awards #2213549 and #2213550. We are also grateful to
+    computing resources from Bridges-2 at Pittsburgh Supercomputing Center available through NAIRR
+    pilot award #240161 and from the Advanced Cyberinfrastructure Coordination Ecosystem: Services
+    &amp; Support (ACCESS) program, which is supported by National Science Foundation grants
+    #2138259, #2138286, #2138307, #2137603, and #2138296. We are also grateful to the Advanced
+    Research Computing (ARC) Center at Virginia Tech for providing access to GPU compute resources
+    for this project. This manuscript has been authored by UT-Battelle, LLC, under contract
+    DE-AC05-00OR22725 with the US Department of Energy (DOE).
   </p>
 
 </main>

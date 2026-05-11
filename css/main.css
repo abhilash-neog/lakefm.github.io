@@ -255,6 +255,38 @@ figcaption {
     margin-bottom: 1em;
 }
 
+/* narrow centered figure (roughly half text-width) */
+.figure-narrow {
+    margin: 1.5em auto;
+    text-align: center;
+    max-width: 52%;
+}
+
+.figure-narrow img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.figure-narrow figcaption {
+    font-size: 0.875em;
+    color: #444;
+    margin-top: 0.5em;
+    text-align: left;
+    line-height: 1.5;
+}
+
+/* ── references list ── */
+.references {
+    padding-left: 1.4em;
+    font-size: 0.9em;
+    line-height: 1.65;
+}
+
+.references li {
+    margin: 0.75em 0;
+}
+
 @media (max-width: 600px) {
     .figure-row { grid-template-columns: 1fr; }
     .figure-row-3 { grid-template-columns: 1fr; }
