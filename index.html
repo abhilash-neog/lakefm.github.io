@@ -19,8 +19,8 @@
   <!-- ── Authors ── -->
   <p class="authors">
     <a href="mailto:abhilash22@vt.edu">Abhilash Neog</a><sup>1</sup>,
-    Sepideh Fatemi<sup>1*</sup>,
-    Medha Sawhney<sup>1*</sup>,
+    Sepideh Fatemi<sup>1</sup>,
+    Medha Sawhney<sup>1</sup>,
     Kazi Sajeed Mehrab<sup>1</sup>,
     Aanish Pradhan<sup>1</sup>,
     Bennett J. McAfee<sup>2</sup>,
@@ -41,50 +41,86 @@
     <sup>6</sup>Dept. of Biological Sciences, Virginia Tech
   </p>
 
-  <p class="equal-contrib"><sup>*</sup>Equal contribution</p>
-
   <!-- ── Action Buttons ── -->
   <div class="button-row">
     <span class="pill-button disabled">
       <img src="images/icons/arxiv.svg" alt="" /> ArXiv &mdash; Coming Soon
     </span>
-    <span class="pill-button disabled">
-      <img src="images/icons/github.svg" alt="" /> Code &mdash; Coming Soon
-    </span>
+    <a class="pill-button" href="https://github.com/KGML-lab/LakeFM" target="_blank" rel="noopener">
+      <img src="images/icons/github.svg" alt="" /> Code
+    </a>
   </div>
 
-  <!-- ── Architecture Figure ── -->
+  <!-- ── Motivation ── -->
+  <h2 class="banded">Motivation</h2>
+  <p>
+    Monitoring the health of inland water bodies such as lakes and reservoirs is essential for
+    ensuring sustainable and equitable use of Earth's freshwater reserves. Lakes are governed by
+    rich physical and biogeochemical processes that vary across geographies and time, creating
+    unique opportunities for machine learning to model their temporal evolution across depths using
+    ecological time-series data.
+  </p>
+  <p>
+    Benchmarking efforts such as LakeBeD-US have harmonized water quality observations across
+    multiple monitoring programs — resulting in over 500 million observations spanning 17 variables
+    from 21 lakes — yet the data remains plagued by high degrees of missing values, uneven sampling
+    frequencies, and highly variable depth and variate coverage across sites. This sparsity and
+    heterogeneity, which is intrinsic to real-world environmental monitoring, severely limits the
+    ability of ML methods to scale to broader collections of lakes using irregular multi-variate
+    multi-depth time series data.
+  </p>
+  <p>
+    At the same time, the broader ML community has made significant progress in developing time
+    series foundation models (e.g., Chronos 2, MOMENT) that learn task-agnostic representations
+    from large heterogeneous corpora. However, aquatic sciences still lacks a foundation model
+    capable of unifying information across multiple lakes and variates with irregular frequencies
+    and depths. Existing TS foundation models either focus on univariate signals or assume clean,
+    densely sampled data. Prior lake-specific efforts are restricted to predicting a small number
+    of variates at regular time scales without missing values.
+  </p>
+  <p>Motivated by this gap, we ask the following research questions:</p>
+  <ol class="rq-list">
+    <li>
+      <strong>RQ1.</strong> <em>Can we build a foundation model for aquatic sciences that learns
+      generic lake processes across a broad collection of lakes and variables, while retaining
+      site-specific nuances?</em>
+    </li>
+    <li>
+      <strong>RQ2.</strong> <em>Can we use such a foundation model to forecast lake dynamics
+      using any subset of variables available at a lake with irregular observations across time
+      and depth?</em>
+    </li>
+    <li>
+      <strong>RQ3.</strong> <em>Can we extract feature representations of lakes that capture
+      their static and time-varying characteristics, revealing novel information about their
+      similarity and temporal evolution at macro-system scales?</em>
+    </li>
+  </ol>
+  <p>
+    To answer these questions, we introduce <strong>LakeFM</strong>, a foundation model
+    pre-trained on a large-scale ecological dataset containing over 1.5 million samples,
+    comprising over 1,000 diverse lake simulations from physics-based models and real-world
+    observations from 21 lakes in LakeBeD-US (60–70% sparsity on average).
+  </p>
+
+  <!-- ── LakeFM - Methodology ── -->
+  <h2 class="banded">LakeFM &mdash; Methodology</h2>
+  <p>
+    LakeFM operates as an <strong>encoder-decoder</strong> framework with four core components
+    designed to handle the sparsity and irregularity inherent in lake ecosystems.
+  </p>
+
   <figure>
-    <img src="images/figures/figure1-1.png" alt="LakeFM architecture overview" />
+    <img src="images/figures/proposed_fig-1.png" alt="LakeFM architecture overview" />
     <figcaption>
-      <strong>LakeFM architecture.</strong> An encoder-decoder framework that tokenizes each observation as a
-      <em>(time, variable, depth, value)</em> tuple, encodes sequences with RoPE-augmented Transformers and an
-      intra/inter-variate attention bias, disentangles static and temporal lake representations via contrastive
-      learning, and decodes forecasts at arbitrary future query points using a Student-<em>t</em> output head.
+      <strong>LakeFM architecture.</strong> Each observation <em>(time, variable, depth, value)</em>
+      is tokenized and passed through RoPE-augmented Transformer encoder layers with an intra/inter-variate
+      attention bias. Two linear projectors disentangle the encoder output into static (lake-invariant)
+      and temporal (dynamic) subspaces, jointly trained with a contrastive loss and a probabilistic
+      forecasting loss. A query-based decoder conditions on arbitrary future
+      <em>(time, variable, depth)</em> queries to produce Student-<em>t</em> predictive distributions.
     </figcaption>
   </figure>
-
-  <!-- ── Abstract ── -->
-  <h2 class="banded">Abstract</h2>
-  <p>
-    Understanding and forecasting lake dynamics is critical for monitoring water quality and ecosystem
-    health across lakes and reservoirs. While machine learning methods have been recently applied to
-    ecological time-series data, existing works assume regular sampling in time and depth, and struggle
-    to generalize across lakes with heterogeneous variables, depths, and observation patterns. To address
-    these limitations, we introduce <strong>LakeFM</strong>, a foundation model for aquatic systems,
-    pre-trained on large-scale ecological datasets comprising both simulated and observed lake ecosystems.
-    Through extensive empirical evaluation, we show that LakeFM learns meaningful representations
-    spanning broader lake-level characteristics, and achieves competitive or often superior forecasting
-    performance compared to existing time-series foundation and non-foundation models, while producing
-    physically plausible predictions consistent with real-world lake dynamics.
-  </p>
-
-  <!-- ── LakeFM (Method) ── -->
-  <h2 class="banded">LakeFM</h2>
-  <p>
-    LakeFM operates as an <strong>encoder-decoder</strong> framework with four core components designed
-    to handle the sparsity and irregularity inherent in lake ecosystems.
-  </p>
 
   <div class="components">
     <div class="component-card">
@@ -140,16 +176,17 @@
   </p>
   <ul>
     <li>
-      <strong>LakeBeD-US</strong> — 500 million unique observations spanning 21 lakes across the
-      United States, covering 17 variables with 60–70% sparsity on average.
+      <strong>LakeBeD-US</strong> [<a href="#" class="cite">citation</a>] — 500 million unique
+      observations spanning 21 lakes across the United States, covering 17 variables with
+      60–70% sparsity on average.
     </li>
     <li>
-      <strong>WQHanson Simulations</strong> — 4 simulation lakes generated using the process-based
-      water quality model.
+      <strong>WQHanson Simulations</strong> [<a href="#" class="cite">citation</a>] — 4 simulation
+      lakes generated using the process-based water quality model.
     </li>
     <li>
-      <strong>FCR Simulations</strong> — 1,000 simulations generated using the GLM-AED
-      process-based model.
+      <strong>FCR Simulations</strong> [<a href="#" class="cite">citation</a>] — 1,000 simulations
+      generated using the GLM-AED process-based model.
     </li>
   </ul>
 
@@ -184,15 +221,31 @@
   </div>
 
   <!-- (b) Masking Experiments -->
-  <h3>Masking Experiments</h3>
+  <h3>Discovering New Insights of Variate Interactions</h3>
   <p>
     LakeFM's query-based decoder enables forecasting under arbitrary input masking — a capability
-    existing TSFMs lack. We mask individual variates in the context window and observe the impact
-    on forecasting performance. For Lake PRLA, masking Dissolved Oxygen (DO) leads to a larger
-    increase in DO MSE than masking Water Temperature (Temp), consistent with DO's strong
-    auto-correlation structure. Strikingly, masking Temp <em>reduces</em> forecast uncertainty
-    even while increasing error — generating novel, ecologically testable hypotheses about
-    variable interactions in lake systems.
+    existing TSFMs lack. By selectively withholding variables or depth layers from the context
+    window, we can probe the cross-variate and cross-depth dependencies that LakeFM has learned,
+    generating ecologically novel and testable hypotheses.
+  </p>
+
+  <h4>5.2.1 &nbsp; Variate Masking</h4>
+  <p>
+    We mask individual variates in the context window and measure the change in forecasting
+    performance of all variables — revealing which variables carry the most predictive information
+    for others. As a case study, we examine Lake PRLA, masking either Dissolved Oxygen (DO) or
+    Water Temperature (Temp) and observing the impact on DO forecasts.
+  </p>
+  <p>
+    Masking DO yields MSE = 12.57 and CRPS = 1.93, while masking Temp yields MSE = 11.00 and
+    CRPS = 2.52. Although Temp masking results in a lower DO MSE, its higher CRPS (2.52) reveals
+    that the model becomes <em>overconfident yet inaccurate</em> — it produces a narrow prediction
+    interval that fails to capture the true value. Conversely, when DO is masked, the model
+    correctly assigns <em>higher uncertainty</em> (lower CRPS = 1.93 despite higher MSE),
+    producing a wider, more inclusive prediction range. This demonstrates that LakeFM's
+    uncertainty estimates are physically meaningful: it recognizes when a crucial covariate is
+    missing and responds by widening its confidence interval rather than collapsing to a
+    point estimate.
   </p>
 
   <div class="figure-row figure-row-3">
@@ -210,7 +263,34 @@
     </figure>
   </div>
   <p class="fig-caption-main">
-    DO forecasts under different masking scenarios for Lake PRLA at depth 1.0m.
+    DO forecasts under different variate masking scenarios for Lake PRLA at depth 1.0 m.
+  </p>
+
+  <h4>5.2.2 &nbsp; Depth Masking</h4>
+  <p>
+    We study the effect of masking all variates at either shallow or deep layers in the context
+    window, measuring the impact on forecasting performance. LakeFM leverages cross-depth
+    relationships to maintain accuracy even when one depth stratum is withheld — for example,
+    masking shallow layers in Lake BARC reveals that deep-layer context is sufficient to
+    reconstruct near-surface dynamics, while Chronos&nbsp;2 collapses without local history.
+  </p>
+
+  <div class="figure-row figure-row-3">
+    <figure>
+      <img src="images/figures/barc_no_mask-1.png" alt="BARC forecast — no depth masking" />
+      <figcaption>(a) No masking</figcaption>
+    </figure>
+    <figure>
+      <img src="images/figures/barc_mask_shallow-1.png" alt="BARC forecast — shallow layers masked" />
+      <figcaption>(b) Shallow layers masked</figcaption>
+    </figure>
+    <figure>
+      <img src="images/figures/barc_mask_deep-1.png" alt="BARC forecast — deep layers masked" />
+      <figcaption>(c) Deep layers masked</figcaption>
+    </figure>
+  </div>
+  <p class="fig-caption-main">
+    Depth masking scenarios for Lake BARC at depth 0.5 m.
   </p>
 
   <!-- (c) Physical Consistency -->
@@ -252,31 +332,32 @@
   <!-- (d) Learned Lake Representations -->
   <h3>Learned Lake Representations</h3>
 
-  <figure>
-    <img src="images/figures/tsne_fig6-1.png" alt="t-SNE of static lake embeddings colored by hydrologic regime" />
-    <figcaption>
-      <strong>Static embeddings (Fig. 6).</strong> t-SNE of LakeFM's lake-level static embeddings
-      colored by hydrologic regime and labeled by lake ID. Without any explicit supervision,
-      the embeddings cluster along known ecological and geographic axes — lakes with similar
-      hydrology and geographic origin are placed close together.
-    </figcaption>
-  </figure>
-
-  <figure>
-    <img src="images/figures/fig7_five_lakes.png" alt="Temporal embedding trajectories for five Wisconsin lakes in 2018" />
-    <figcaption>
-      <strong>Temporal embeddings (Fig. 7).</strong> Seasonal trajectories of five Wisconsin lakes
-      across 2018, projected via t-SNE and colored by trophic state and hydrologic regime.
-      Eutrophic drainage lakes (ME, MO) follow similar temporal paths, while oligotrophic seepage
-      lakes (SP, BM) form a separate cluster — demonstrating that LakeFM captures ecologically
-      meaningful temporal dynamics in its representations.
-    </figcaption>
-  </figure>
+  <div class="figure-row">
+    <figure class="figure-half">
+      <img src="images/figures/tsne_fig6-1.png" alt="t-SNE of static lake embeddings colored by hydrologic regime" />
+      <figcaption>
+        <strong>Static embeddings.</strong> t-SNE of LakeFM's lake-level static embeddings
+        colored by hydrologic regime. Without any explicit supervision, the embeddings cluster
+        along known ecological and geographic axes — lakes with similar hydrology and geographic
+        origin are placed close together.
+      </figcaption>
+    </figure>
+    <figure class="figure-half">
+      <img src="images/figures/fig7_five_lakes.png" alt="Temporal embedding trajectories for five Wisconsin lakes in 2018" />
+      <figcaption>
+        <strong>Temporal embeddings.</strong> Seasonal trajectories of five Wisconsin lakes
+        across 2018, projected via t-SNE and colored by trophic state and hydrologic regime.
+        Eutrophic drainage lakes (ME, MO) follow similar temporal paths, while oligotrophic
+        seepage lakes (SP, BM) form a separate cluster — demonstrating ecologically meaningful
+        temporal dynamics in the representations.
+      </figcaption>
+    </figure>
+  </div>
 
   <figure>
     <img src="images/figures/fig8_tsne_cyano.png" alt="t-SNE of lake embeddings colored by phosphorus and cyanobacteria" />
     <figcaption>
-      <strong>Biogeochemical alignment (Fig. 8).</strong> Static embeddings colored by total
+      <strong>Biogeochemical alignment.</strong> Static embeddings colored by total
       phosphorus and cyanobacteria concentration gradients. The embedding space aligns with
       biogeochemical water quality indicators, suggesting that LakeFM captures nutrient
       dynamics and algal bloom risk factors without direct supervision on these attributes.
