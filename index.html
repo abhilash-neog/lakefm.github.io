@@ -48,13 +48,21 @@
     <span class="pill-button disabled">
       <img src="images/icons/arxiv.svg" alt="" /> ArXiv &mdash; Coming Soon
     </span>
-    <a class="pill-button" href="lakefm.pdf">
-      <img src="images/icons/pdf.svg" alt="" /> Paper
-    </a>
     <span class="pill-button disabled">
       <img src="images/icons/github.svg" alt="" /> Code &mdash; Coming Soon
     </span>
   </div>
+
+  <!-- ── Architecture Figure ── -->
+  <figure>
+    <img src="images/figures/figure1-1.png" alt="LakeFM architecture overview" />
+    <figcaption>
+      <strong>LakeFM architecture.</strong> An encoder-decoder framework that tokenizes each observation as a
+      <em>(time, variable, depth, value)</em> tuple, encodes sequences with RoPE-augmented Transformers and an
+      intra/inter-variate attention bias, disentangles static and temporal lake representations via contrastive
+      learning, and decodes forecasts at arbitrary future query points using a Student-<em>t</em> output head.
+    </figcaption>
+  </figure>
 
   <!-- ── Abstract ── -->
   <h2 class="banded">Abstract</h2>
@@ -71,29 +79,8 @@
     physically plausible predictions consistent with real-world lake dynamics.
   </p>
 
-  <!-- ── Key Contributions ── -->
-  <h2 class="banded">Contributions</h2>
-  <ol class="contributions">
-    <li>
-      We propose <strong>LakeFM</strong>, a foundation model that can ingest <em>irregular,
-      multi-variate, multi-depth</em> lake time-series data — including partially observed inputs
-      across heterogeneous lakes — with competitive forecasting performance on both seen and unseen lakes,
-      while demonstrating emergent ability to adhere to aquatic physical laws.
-    </li>
-    <li>
-      We present novel insights about the <strong>static characteristics and temporal evolution</strong>
-      of lakes using the learned lake-specific embeddings, and highlight how LakeFM representations
-      effectively align with different ecological axes.
-    </li>
-    <li>
-      We present case studies on forecasting performance under <strong>variate and depth masking</strong>
-      scenarios, demonstrating how LakeFM's ability to handle partial input reveals novel insights
-      about variable interactions in lakes.
-    </li>
-  </ol>
-
-  <!-- ── Method ── -->
-  <h2 class="banded">Method</h2>
+  <!-- ── LakeFM (Method) ── -->
+  <h2 class="banded">LakeFM</h2>
   <p>
     LakeFM operates as an <strong>encoder-decoder</strong> framework with four core components designed
     to handle the sparsity and irregularity inherent in lake ecosystems.
@@ -143,8 +130,8 @@
     <strong>InfoNCE contrastive loss</strong> to encourage meaningful lake-specific representations.
   </p>
 
-  <!-- ── Experimental Setup ── -->
-  <h2 class="banded">Experimental Setup</h2>
+  <!-- ── Experiments and Results ── -->
+  <h2 class="banded">Experiments and Results</h2>
 
   <h3>Dataset</h3>
   <p>
@@ -166,52 +153,135 @@
     </li>
   </ul>
 
-  <h3>Evaluation</h3>
+  <h3>Evaluation Setup</h3>
   <p>
     The LakeBeD-US data is partitioned into an <em>In-Distribution (ID)</em> set (first 70% of
     each lake's data, 15 lakes) and an <em>Out-of-Distribution (OOD)</em> set (final 20% of each
-    ID lake + 6 entirely unseen lakes). We evaluate under two settings:
-  </p>
-  <ul>
-    <li><strong>In-Distribution (ID)</strong> — held-out test data from the 15 ID lakes.</li>
-    <li><strong>Zero-Shot Generalization</strong> — the 6 entirely unseen OOD lakes.</li>
-  </ul>
-
-  <h3>Baselines</h3>
-  <p>
-    We compare against two families of baselines: (a) <strong>Time-Series Foundation Models</strong>
-    — Chronos&nbsp;2, LPTM, MOMENT, and (b) a <strong>non-foundation local model</strong> —
-    iTransformer trained on each lake individually.
+    ID lake + 6 entirely unseen lakes). We compare against time-series foundation models
+    (Chronos&nbsp;2, LPTM, MOMENT) and a non-foundation local model (iTransformer trained
+    per-lake).
   </p>
 
-  <!-- ── Results ── -->
-  <h2 class="banded">Results</h2>
-
+  <!-- (a) Forecasting Performance -->
   <h3>Forecasting Performance</h3>
   <p>
-    LakeFM consistently achieves the lowest lake-wise MSE across all ID lakes. On OOD lakes,
-    LakeFM shows best zero-shot performance on all lakes except SUGG, where iTransformer
-    (locally trained) shows the lowest MSE. Crucially, iTransformer's performance varies widely
-    across OOD lakes since it relies solely on local data per lake.
-  </p>
-  <p>
-    LakeFM achieves a <strong>best overall rank of 2.17</strong> across all OOD lakes and
-    <strong>1.86 across all ID lakes</strong> in terms of lake-wise MSE — demonstrating
-    consistent cross-lake generalization that local models cannot provide.
+    LakeFM achieves a <strong>best overall rank of 1.86 across all ID lakes</strong> and
+    <strong>2.17 across all OOD lakes</strong> in terms of lake-wise MSE.
+    On OOD lakes, LakeFM shows the best zero-shot performance on all lakes except SUGG, where
+    iTransformer (locally trained) edges it out — though iTransformer's performance varies widely
+    across unseen lakes since it relies solely on local data.
   </p>
 
-  <h3>Physical Plausibility</h3>
+  <div class="figure-row">
+    <figure class="figure-half">
+      <img src="images/figures/iid_bar_plot-1.png" alt="In-distribution forecasting performance bar plot" />
+      <figcaption>In-distribution (ID) forecasting performance across 15 lakes.</figcaption>
+    </figure>
+    <figure class="figure-half">
+      <img src="images/figures/ood_bar_plot-1.png" alt="Out-of-distribution forecasting performance bar plot" />
+      <figcaption>Zero-shot generalization (OOD) across 6 unseen lakes.</figcaption>
+    </figure>
+  </div>
+
+  <!-- (b) Masking Experiments -->
+  <h3>Masking Experiments</h3>
   <p>
-    Beyond accuracy, LakeFM produces predictions consistent with real-world lake dynamics,
-    reflecting physically plausible behavior across heterogeneous lakes and variable sets.
+    LakeFM's query-based decoder enables forecasting under arbitrary input masking — a capability
+    existing TSFMs lack. We mask individual variates in the context window and observe the impact
+    on forecasting performance. For Lake PRLA, masking Dissolved Oxygen (DO) leads to a larger
+    increase in DO MSE than masking Water Temperature (Temp), consistent with DO's strong
+    auto-correlation structure. Strikingly, masking Temp <em>reduces</em> forecast uncertainty
+    even while increasing error — generating novel, ecologically testable hypotheses about
+    variable interactions in lake systems.
   </p>
 
-  <h3>Representation Quality</h3>
-  <p>
-    Learned lake-specific embeddings align with known ecological axes (e.g., lake depth,
-    trophic state, climate region), revealing that LakeFM captures meaningful
-    lake-level characteristics without explicit supervision on these attributes.
+  <div class="figure-row figure-row-3">
+    <figure>
+      <img src="images/figures/prla_no_mask-1.png" alt="PRLA DO forecast — no masking" />
+      <figcaption>(a) No masking</figcaption>
+    </figure>
+    <figure>
+      <img src="images/figures/prla_mask_temp-1.png" alt="PRLA DO forecast — Temp masked" />
+      <figcaption>(b) Temp masked</figcaption>
+    </figure>
+    <figure>
+      <img src="images/figures/prla_mask_do-1.png" alt="PRLA DO forecast — DO masked" />
+      <figcaption>(c) DO masked</figcaption>
+    </figure>
+  </div>
+  <p class="fig-caption-main">
+    DO forecasts under different masking scenarios for Lake PRLA at depth 1.0m.
   </p>
+
+  <!-- (c) Physical Consistency -->
+  <h3>Physical Consistency</h3>
+  <p>
+    LakeFM is not explicitly trained with physical constraints, yet its predictions demonstrate
+    emergent compliance with two fundamental limnological laws, evaluated across 100 unseen
+    simulation lakes:
+  </p>
+  <ul>
+    <li>
+      <strong>Thermal Stratification Law.</strong> During summer, lake temperature decreases
+      monotonically with depth. We measure this via the <em>inversion rate</em> — the average
+      number of depth-wise temperature inversions per day (lower is better).
+    </li>
+    <li>
+      <strong>Beer-Lambert Law.</strong> Light intensity attenuates exponentially with depth due
+      to biomass in the water column. We quantify this via the Pearson R² between predicted
+      Chlorophyll-a and Light Attenuation (higher is better).
+    </li>
+  </ul>
+  <p>
+    LakeFM shows a lower inversion rate and higher Beer-Lambert R² than Chronos&nbsp;2 on the
+    large majority of unseen lakes, indicating that physical plausibility emerges from
+    pre-training on diverse ecological data alone.
+  </p>
+
+  <div class="figure-row">
+    <figure class="figure-half">
+      <img src="images/figures/inversion_rate-1.png" alt="Inversion rate comparison: LakeFM vs Chronos 2" />
+      <figcaption>Inversion rate (thermal stratification law, &darr;).</figcaption>
+    </figure>
+    <figure class="figure-half">
+      <img src="images/figures/bl_r2-1.png" alt="Beer-Lambert R² comparison: LakeFM vs Chronos 2" />
+      <figcaption>Beer-Lambert R² (light attenuation law, &uarr;).</figcaption>
+    </figure>
+  </div>
+
+  <!-- (d) Learned Lake Representations -->
+  <h3>Learned Lake Representations</h3>
+
+  <figure>
+    <img src="images/figures/tsne_fig6-1.png" alt="t-SNE of static lake embeddings colored by hydrologic regime" />
+    <figcaption>
+      <strong>Static embeddings (Fig. 6).</strong> t-SNE of LakeFM's lake-level static embeddings
+      colored by hydrologic regime and labeled by lake ID. Without any explicit supervision,
+      the embeddings cluster along known ecological and geographic axes — lakes with similar
+      hydrology and geographic origin are placed close together.
+    </figcaption>
+  </figure>
+
+  <figure>
+    <img src="images/figures/fig7_five_lakes.png" alt="Temporal embedding trajectories for five Wisconsin lakes in 2018" />
+    <figcaption>
+      <strong>Temporal embeddings (Fig. 7).</strong> Seasonal trajectories of five Wisconsin lakes
+      across 2018, projected via t-SNE and colored by trophic state and hydrologic regime.
+      Eutrophic drainage lakes (ME, MO) follow similar temporal paths, while oligotrophic seepage
+      lakes (SP, BM) form a separate cluster — demonstrating that LakeFM captures ecologically
+      meaningful temporal dynamics in its representations.
+    </figcaption>
+  </figure>
+
+  <figure>
+    <img src="images/figures/fig8_tsne_cyano.png" alt="t-SNE of lake embeddings colored by phosphorus and cyanobacteria" />
+    <figcaption>
+      <strong>Biogeochemical alignment (Fig. 8).</strong> Static embeddings colored by total
+      phosphorus and cyanobacteria concentration gradients. The embedding space aligns with
+      biogeochemical water quality indicators, suggesting that LakeFM captures nutrient
+      dynamics and algal bloom risk factors without direct supervision on these attributes.
+    </figcaption>
+  </figure>
 
   <!-- ── BibTeX ── -->
   <h2 class="banded">BibTeX</h2>

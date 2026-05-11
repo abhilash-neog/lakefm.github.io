@@ -212,6 +212,39 @@ figcaption {
     color: #333;
 }
 
+/* ── figure row (side-by-side figures) ── */
+.figure-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+    margin: 1em 0;
+}
+
+.figure-row-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.figure-row figure {
+    margin: 0;
+}
+
+.figure-half {
+    margin: 0;
+}
+
+.fig-caption-main {
+    text-align: center;
+    font-size: 0.875em;
+    color: #444;
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+
+@media (max-width: 600px) {
+    .figure-row { grid-template-columns: 1fr; }
+    .figure-row-3 { grid-template-columns: 1fr; }
+}
+
 /* ── results table ── */
 table {
     border-collapse: collapse;
