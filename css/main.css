@@ -259,7 +259,7 @@ figcaption {
 .figure-reduced {
     margin: 1.2em auto;
     text-align: center;
-    max-width: 65%;
+    max-width: 80%;
 }
 
 .figure-reduced img {
