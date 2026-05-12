@@ -59,59 +59,56 @@
   <!-- ── Motivation ── -->
   <h2 class="banded">Motivation</h2>
   <p>
-    Monitoring the health of inland water bodies such as lakes and reservoirs is essential for
-    ensuring sustainable and equitable use of Earth's freshwater reserves. Lakes are governed by
-    rich physical and biogeochemical processes that vary across geographies and time, creating
-    unique opportunities for machine learning to model their temporal evolution across depths using
-    ecological time-series data.
+    Understanding and forecasting lake dynamics is critical for monitoring water quality and 
+    ecosystem health across lakes and reservoirs. While there is a growing body of work on modeling 
+    the temperature of water in lakes, modeling a single variate only provides a partial view to 
+    the complex interactions of processes governing lake dynamics, observed at varying depths, frequencies, 
+    subsets of variables, and levels of reliability from one site (lake) to another. 
   </p>
   <p>
-    Benchmarking efforts such as LakeBeD-US have harmonized water quality observations across
-    multiple monitoring programs — resulting in over 500 million observations spanning 17 variables
-    from 21 lakes — yet the data remains plagued by high degrees of missing values, uneven sampling
-    frequencies, and highly variable depth and variate coverage across sites. This sparsity and
-    heterogeneity, which is intrinsic to real-world environmental monitoring, severely limits the
-    ability of ML methods to scale to broader collections of lakes using irregular multi-variate
+    Benchmarking efforts such as LakeBeD-US have harmonized water quality observations across 
+    multiple monitoring programs - resulting in over 500 million observations spanning 17 variables 
+    from 21 lakes, yet the data remains plagued by high degrees of missing values, uneven sampling 
+    frequencies, and highly variable depth and variate coverage across sites. This sparsity and 
+    heterogeneity, which is intrinsic to real-world environmental monitoring, severely limits the 
+    ability of ML methods to scale to broader collections of lakes using irregular multi-variate 
     multi-depth time series data.
   </p>
   <p>
-    At the same time, the broader ML community has made significant progress in developing time
-    series foundation models (e.g., Chronos 2, MOMENT) that learn task-agnostic representations
-    from large heterogeneous corpora. However, aquatic sciences still lacks a foundation model
-    capable of unifying information across multiple lakes and variates with irregular frequencies
-    and depths. Existing TS foundation models either focus on univariate signals or assume clean,
-    densely sampled data. Prior lake-specific efforts are restricted to predicting a small number
-    of variates at regular time scales without missing values.
+    At the same time, the broader ML community has made significant progress in developing time 
+    series foundation models (e.g., Chronos 2, MOMENT) that learn task-agnostic representations 
+    from large heterogeneous corpora. However, aquatic sciences still lacks a foundation model 
+    capable of unifying information across multiple lakes and variates with irregular frequencies 
+    and depths. Existing TS foundation models either focus on univariate signals or assume clean, 
+    densely sampled data.
   </p>
   <p>Motivated by this gap, we ask the following research questions:</p>
   <ol class="rq-list">
     <li>
-      <strong>RQ1.</strong> <em>Can we build a foundation model for aquatic sciences that learns
-      generic lake processes across a broad collection of lakes and variables, while retaining
-      site-specific nuances?</em>
+      <strong>RQ1.</strong> <em>Can we build a foundation model for aquatic sciences that learns generic
+        lake processes across a broad collection of lakes and variables, while retaining site-specific nuances?</em>
     </li>
     <li>
-      <strong>RQ2.</strong> <em>Can we use such a foundation model to forecast lake dynamics
-      using any subset of variables available at a lake with irregular observations across time
-      and depth?</em>
+      <strong>RQ2.</strong> <em>Can we use such a foundation model to forecast lake dynamics using 
+        any subset of variables available at a lake with irregular observations across time and depth?</em>
     </li>
     <li>
-      <strong>RQ3.</strong> <em>Can we extract feature representations of lakes that capture
-      their static and time-varying characteristics, revealing novel information about their
-      similarity and temporal evolution at macro-system scales?</em>
+      <strong>RQ3.</strong> <em>Can we extract feature representations of lakes that capture 
+        their static and time-varying characteristics, revealing novel information about their 
+        similarity and temporal evolution at macro-system scales?</em>
     </li>
   </ol>
   <p>
-    To answer these questions, we introduce <strong>LakeFM</strong>, a foundation model
-    pre-trained on a large-scale ecological dataset containing over 1.5 million samples,
-    comprising over 1,000 diverse lake simulations from physics-based models and real-world
-    observations from 21 lakes in LakeBeD-US (60–70% sparsity on average).
+    To answer these questions, we introduce <strong>LakeFM</strong>, a foundation model pre-trained on a 
+    large-scale ecological dataset containing over 1.5 million samples, comprising over 
+    1,000 diverse lake simulations from physics-based models and real-world observations 
+    from 21 lakes in LakeBeD-US dataset.
   </p>
 
   <!-- ── LakeFM - Methodology ── -->
   <h2 class="banded">LakeFM &mdash; Methodology</h2>
   <p>
-    LakeFM operates as an <strong>encoder-decoder</strong> framework with four core components
+    LakeFM operates as an encoder-decoder framework with four core components
     designed to handle the sparsity and irregularity inherent in lake ecosystems.
   </p>
 
@@ -164,11 +161,11 @@
   </div>
 
   <p>
-    Predictions are parameterized as a <strong>Student-<em>t</em> distribution</strong>
+    Predictions are parameterized as a Student-<em>t</em> distribution
     (&mu;, &sigma;, &nu;), with per-token degrees-of-freedom &nu; learned adaptively to capture the
     heavy-tailed noise common in ecological measurements.
     Pre-training jointly minimizes a probabilistic forecasting loss and a lake-wise
-    <strong>InfoNCE contrastive loss</strong> to encourage meaningful lake-specific representations.
+    InfoNCE contrastive loss to encourage meaningful lake-specific representations.
   </p>
 
   <!-- ── Experiments and Results ── -->
@@ -176,8 +173,8 @@
 
   <h3>Dataset</h3>
   <p>
-    LakeFM is pre-trained on a large-scale ecological dataset containing <strong>over 1.5 million
-    samples</strong>:
+    LakeFM is pre-trained on a large-scale ecological dataset containing over 1.5 million
+    samples:
   </p>
   <ul>
     <li>
@@ -197,9 +194,8 @@
 
   <h3>Evaluation Setup</h3>
   <p>
-    The LakeBeD-US data is partitioned into an <em>In-Distribution (ID)</em> set (first 70% of
-    each lake's data, 15 lakes) and an <em>Out-of-Distribution (OOD)</em> set (final 20% of each
-    ID lake + 6 entirely unseen lakes). We compare against time-series foundation models
+    The LakeBeD-US data is partitioned into an <em>In-Distribution (ID)</em> set (15 lakes) and an <em>Out-of-Distribution (OOD)</em> set 
+    (6 entirely unseen lakes). We compare against time-series foundation models
     (Chronos&nbsp;2, LPTM, MOMENT) and a non-foundation local model (iTransformer trained
     per-lake).
   </p>
@@ -210,8 +206,9 @@
     LakeFM achieves a <strong>best overall rank of 1.86 across all ID lakes</strong> and
     <strong>2.17 across all OOD lakes</strong> in terms of lake-wise MSE.
     On OOD lakes, LakeFM shows the best zero-shot performance on all lakes except SUGG, where
-    iTransformer (locally trained) edges it out — though iTransformer's performance varies widely
-    across unseen lakes since it relies solely on local data.
+    iTransformer (locally trained) edges it out. SUGG has much lower vertical resolution than most benchmark lakes, with only 5 
+    observed depths versus 10+ on average. This may reduce the benefit of fine-grained depth modeling and favor 
+    iTransformer's variable-token design, which can emphasize broader cross-variate dependencies.
   </p>
 
   <div class="figure-row">
@@ -283,7 +280,7 @@
     window, measuring the impact on forecasting performance. LakeFM leverages cross-depth
     relationships to maintain accuracy even when one depth stratum is withheld — for example,
     masking shallow layers in Lake BARC reveals that deep-layer context is sufficient to
-    reconstruct near-surface dynamics, while Chronos&nbsp;2 collapses without local history.
+    reconstruct near-surface dynamics.
   </p>
 
   <div class="figure-row figure-row-3">
