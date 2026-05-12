@@ -246,6 +246,12 @@ figcaption {
     margin-right: auto;
 }
 
+/* cyano t-SNE (square) + qualitative time-series: 40/60 split */
+.figure-row-cyano-qual {
+    grid-template-columns: 2fr 3fr;
+    align-items: start;
+}
+
 .figure-row figure {
     margin: 0;
 }

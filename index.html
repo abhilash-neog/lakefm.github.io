@@ -362,16 +362,27 @@
     </figure>
   </div>
 
-  <figure class="figure-narrow">
-    <img src="images/figures/fig8_tsne_cyano.png" alt="t-SNE of simulated lake embeddings colored by w_p_cyano parameter" />
-    <figcaption>
-      <strong>LakeFM Embedding Alignment with Simulation Parameters.</strong>
-      We investigate whether LakeFM's embeddings of simulated lakes encode information of
-      process-based parameters used to generate the simulations. We can see a clear gradient
-      across the embedding space with respect to this parameter, with clear separation of low,
-      intermediate, and high <em>w<sub>p</sub><sub>cyano</sub></em> values.
-    </figcaption>
-  </figure>
+  <div class="figure-row figure-row-cyano-qual">
+    <figure>
+      <img src="images/figures/fig8_tsne_cyano.png" alt="t-SNE of simulated lake embeddings colored by w_p_cyano parameter" />
+      <figcaption>
+        <strong>LakeFM Embedding Alignment with Simulation Parameters.</strong>
+        We investigate whether LakeFM's embeddings of simulated lakes encode information of
+        process-based parameters used to generate the simulations. We can see a clear gradient
+        across the embedding space with respect to this parameter, with clear separation of low,
+        intermediate, and high <em>w<sub>p</sub><sub>cyano</sub></em> values.
+      </figcaption>
+    </figure>
+    <figure>
+      <img src="images/figures/temp_me_0.0m.png" alt="Qualitative comparison on Lake Mendota water temperature at 0m" />
+      <figcaption>
+        <strong>Qualitative Comparison.</strong>
+        Qualitative analysis comparing LakeFM and baselines — Chronos&nbsp;2, iTransformer,
+        MOMENT, and LPTM — on Lake Mendota for the Water Temperature variate observed at
+        depth 0&nbsp;m.
+      </figcaption>
+    </figure>
+  </div>
 
   <!-- ── BibTeX ── -->
   <h2 class="banded">BibTeX</h2>
