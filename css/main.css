@@ -100,11 +100,11 @@ a:hover {
 } */
 .venue {
     text-align: center;
-    color: #4b5563; /* stronger neutral gray */
+    color: #2563eb;
     margin: 0.2em 0 0.8em;
     font-size: 1em;
-    font-weight: 500;
-    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-family: Inter, Helvetica, Arial, sans-serif;
     letter-spacing: 0.015em;
 }
 
