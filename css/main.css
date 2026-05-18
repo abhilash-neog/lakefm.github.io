@@ -93,9 +93,10 @@ a:hover {
 .venue {
     text-align: center;
     font-style: italic;
-    color: #555;
+    color: var(--accent-color);
     margin: 0.2em 0 0.8em;
-    font-size: 0.95em;
+    font-size: 1em;
+    letter-spacing: 0.01em;
 }
 
 /* ── authors ── */
