@@ -90,13 +90,22 @@ a:hover {
 }
 
 /* ── venue / conference badge ── */
-.venue {
+/* .venue {
     text-align: center;
     font-style: ;
     color: var(--accent-color);
     margin: 0.2em 0 0.8em;
     font-size: 1em;
     letter-spacing: 0.01em;
+} */
+.venue {
+    text-align: center;
+    color: #4b5563; /* stronger neutral gray */
+    margin: 0.2em 0 0.8em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: 0.015em;
 }
 
 /* ── authors ── */
