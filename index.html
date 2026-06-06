@@ -205,12 +205,12 @@
   <!-- (a) Forecasting Performance -->
   <h3>Forecasting Performance</h3>
   <p>
-    LakeFM achieves a <strong>best overall rank of 1.86 across all ID lakes</strong> and
-    <strong>2.17 across all OOD lakes</strong> in terms of lake-wise MSE.
-    On OOD lakes, LakeFM shows the best zero-shot performance on all lakes except SUGG, where
-    iTransformer (locally trained) edges it out. SUGG has much lower vertical resolution than most benchmark lakes, with only 5 
-    observed depths versus 10+ on average. This may reduce the benefit of fine-grained depth modeling and favor 
-    iTransformer's variable-token design, which can emphasize broader cross-variate dependencies.
+    LakeFM achieves a <strong>best overall rank of 2.03 across all ID lakes</strong> and
+    <strong>2.0 across all OOD lakes</strong> in terms of lake-wise MSE.
+    In the ID setting, LakeFM consistently shows the lowest MSE across all lakes, while baselines like iTransformer
+    show high variability on BM and GL4. On OOD lakes, LakeFM shows the best zero-shot performance on all lakes except TR.
+    Note that iTransformer's performance varies widely across OOD lakes, since it only relies on local data from a specific
+    lake for training and does not utilize transfer of knowledge across lakes, in contrast to LakeFM and other foundation models.
   </p>
 
   <div class="figure-row">
