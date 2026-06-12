@@ -369,6 +369,27 @@ tbody tr.highlight {
     background: #e8f4f8;
 }
 
+.hf-button {
+  background: #fff3c4;
+  color: #3b2f00;
+  border: 1px solid #f5c542;
+}
+
+.hf-button:hover {
+  background: #ffe88a;
+  color: #2b2200;
+}
+
+.hf-button img {
+  filter: none;
+}
+
+.pill-button.disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* ── BibTeX block ── */
 pre.bibtex {
     background: #f5f5f5;
